@@ -4,7 +4,7 @@ import { getAuth } from "firebase/auth";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyDUV_lbInH0Udr4zVTirzd7I5o43j7lojk",
+    apiKey: apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
     authDomain: "q-vault-2598e.firebaseapp.com",
     projectId: "q-vault-2598e",
     storageBucket: "q-vault-2598e.firebasestorage.app",
