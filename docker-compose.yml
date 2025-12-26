@@ -1,0 +1,70 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:14-alpine
+    container_name: qvault-postgres
+    environment:
+      POSTGRES_DB: qvault
+      POSTGRES_USER: qvault_user
+      POSTGRES_PASSWORD: qvault_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - qvault-network
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U qvault_user -d qvault" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Backend Service
+  backend:
+    build:
+      context: ./qvault-backend
+      dockerfile: Dockerfile
+    container_name: qvault-backend
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/qvault
+      SPRING_DATASOURCE_USERNAME: qvault_user
+      SPRING_DATASOURCE_PASSWORD: qvault_password
+      FIREBASE_CREDENTIALS_PATH: /app/firebase-service-account.json
+      STORAGE_PATH: /app/storage/encrypted-files
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./qvault-backend/firebase-service-account.json:/app/firebase-service-account.json:ro
+      - backend_storage:/app/storage
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - qvault-network
+    restart: unless-stopped
+
+  # Frontend Service
+  frontend:
+    build:
+      context: ./qvault-frontend
+      dockerfile: Dockerfile
+    container_name: qvault-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - qvault-network
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+    driver: local
+  backend_storage:
+    driver: local
+
+networks:
+  qvault-network:
+    driver: bridge

@@ -1,0 +1,91 @@
+# Q-Vault Project .gitignore
+
+# ==================== Backend ====================
+
+# Compiled class files
+*.class
+
+# Maven
+qvault-backend/target/
+qvault-backend/*.log
+
+# IDE
+.idea/
+*.iml
+.vscode/
+*.swp
+*.swo
+
+# H2 Database Files (IMPORTANT: Don't commit database)
+qvault-backend/data/
+*.mv.db
+*.lock.db
+*.trace.db
+
+# Encrypted/Decrypted File Storage
+qvault-backend/storage/
+
+# Firebase credentials (SECURITY: Never commit!)
+qvault-backend/firebase-service-account.json
+firebase-service-account.json
+
+# Environment files
+.env
+.env.local
+.env.production
+
+# ==================== Frontend ====================
+
+# Dependencies
+qvault-frontend/node_modules/
+
+# Build outputs
+qvault-frontend/dist/
+
+# Vite cache
+qvault-frontend/.vite/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ==================== General ====================
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Temp files
+*.tmp
+*.temp
+*.bak
+
+# Logs
+*.log
+logs/
+# Secrets
+.env
+*.env
+firebase-service-account.json
+*.key
+*.pem
+
+# Backend
+target/
+application.yml
+
+# Frontend
+node_modules/
+dist/
+
+# OS files
+.DS_Store
+
+*.log
+
